@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust Travel Agency</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a76d2;
+            --secondary-color: #f8f9fa;
+            --accent-color: #ff6b6b;
+            --dark-color: #343a40;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+        
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary-color) !important;
+            font-weight: 700;
+        }
+        
+        .nav-link {
+            color: var(--dark-color) !important;
+            font-weight: 500;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1474&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 90vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 12px 30px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0d47a1;
+            border-color: #0d47a1;
+            transform: translateY(-3px);
+        }
+        
+        .btn-outline-primary {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .section-title {
+            position: relative;
+            margin-bottom: 40px;
+            padding-bottom: 15px;
+            text-align: center;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            margin-bottom: 20px;
+            height: 100%;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .accordion-button:not(.collapsed) {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: rgba(0,0,0,.125);
+        }
+        
+        .contact-form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(26, 118, 210, 0.25);
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 40px 0 20px;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            color: var(--primary-color);
+        }
+        
+        section {
+            padding: 80px 0;
+        }
+        
+        .bg-light {
+            background-color: #f8f9fa !important;
+        }
+        
+        .price-tag {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .accordion-body ul {
+            padding-left: 20px;
+        }
+        
+        .accordion-body ul li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+            <div class="container">
+                <a class="navbar-brand" href="#">Wanderlust</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#destinations">Destinations</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#tours">Tours</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#contact">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="display-3 fw-bold mb-4">Discover the World's Beauty</h1>
+                <p class="lead mb-4">Experience unforgettable journeys with our expertly crafted tours and travel packages</p>
+                <a href="#destinations" class="btn btn-primary btn-lg">Explore Destinations</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destinations Section -->
+    <section id="destinations" class="bg-light">
+        <div class="container">
+            <h2 class="section-title">Popular Destinations</h2>
+            <div class="row">
+                <!-- Destination 1 -->
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=738&q=80" class="card-img-top" alt="Bali, Indonesia">
+                        <div class="card-body">
+                            <h5 class="card-title">Bali, Indonesia</h5>
+                            <p class="card-text">Discover the island of gods with its stunning beaches, volcanic mountains, and spiritual retreats.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price-tag">From $899</span>
+                                <a href="#" class="btn btn-outline-primary">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Destination 2 -->
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" class="card-img-top" alt="Santorini, Greece">
+                        <div class="card-body">
+                            <h5 class="card-title">Santorini, Greece</h5>
+                            <p class="card-text">Experience the iconic white-washed buildings and breathtaking sunsets in the Aegean Sea.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price-tag">From $1,199</span>
+                                <a href="#" class="btn btn-outline-primary">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Destination 3 -->
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1503919545889-aef636e10ad4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" class="card-img-top" alt="Kyoto, Japan">
+                        <div class="card-body">
+                            <h5 class="card-title">Kyoto, Japan</h5>
+                            <p class="card-text">Immerse yourself in traditional Japanese culture with ancient temples and beautiful gardens.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price-tag">From $1,499</span>
+                                <a href="#" class="btn btn-outline-primary">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tours Section -->
+    <section id="tours">
+        <div class="container">
+            <h2 class="section-title">Tour Packages</h2>
+            <div class="accordion" id="toursAccordion">
+                <!-- Tour 1 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            European Highlights Tour
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#toursAccordion">
+                        <div class="accordion-body">
+                            <p>Experience the best of Europe in this 14-day tour covering 5 countries. From the romantic streets of Paris to the historic landmarks of Rome.</p>
+                            <ul>
+                                <li>14 days, 5 countries</li>
+                                <li>Guided tours with expert local guides</li>
+                                <li>4-star accommodations</li>
+                                <li>Breakfast included daily</li>
+                                <li>Transportation between cities</li>
+                            </ul>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price-tag">$2,499 per person</span>
+                                <a href="#" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tour 2 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Southeast Asia Adventure
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#toursAccordion">
+                        <div class="accordion-body">
+                            <p>Explore the diverse cultures and stunning landscapes of Thailand, Vietnam, and Cambodia in this 21-day adventure.</p>
+                            <ul>
+                                <li>21 days, 3 countries</li>
+                                <li>Local experiences and cultural immersion</li>
+                                <li>Comfortable accommodations</li>
+                                <li>Some meals included</li>
+                                <li>Domestic flights and ground transportation</li>
+                            </ul>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price-tag">$1,899 per person</span>
+                                <a href="#" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tour 3 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            African Safari Experience
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#toursAccordion">
+                        <div class="accordion-body">
+                            <p>Witness incredible wildlife and breathtaking landscapes on this 10-day safari adventure in Kenya and Tanzania.</p>
+                            <ul>
+                                <li>10 days, 2 countries</li>
+                                <li>Game drives in renowned national parks</li>
+                                <li>Lodge and tented camp accommodations</li>
+                                <li>All meals included during safari</li>
+                                <li>Expert guides and 4x4 vehicles</li>
+                            </ul>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price-tag">$3,299 per person</span>
+                                <a href="#" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-light">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="contact-form">
+                        <form>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Your Name</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="destination" class="form-label">Destination of Interest</label>
+                                <select class="form-select" id="destination">
+                                    <option selected>Select a destination</option>
+                                    <option value="bali">Bali, Indonesia</option>
+                                    <option value="santorini">Santorini, Greece</option>
+                                    <option value="kyoto">Kyoto, Japan</option>
+                                    <option value="europe">European Tour</option>
+                                    <option value="asia">Southeast Asia</option>
+                                    <option value="africa">African Safari</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p>&copy; 2023 Wanderlust Travel Agency. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
