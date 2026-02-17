@@ -59,7 +59,6 @@ class ContactManager:
         self.linked_list = DoublyLinkedList()  # maintains insertion order
     
     def add_contact(self, name, phone):
-        """Add a new contact to both hash table and linked list."""
         if name in self.hash_table:
             print(f"Error: Contact '{name}' already exists.")
             return False
@@ -71,7 +70,6 @@ class ContactManager:
         return True
     
     def search_by_name(self, name):
-        """Search for exact contact by name using hash table (O(1))."""
         if name in self.hash_table:
             contact = self.hash_table[name]
             print(f"Match found: {contact}")
@@ -81,7 +79,6 @@ class ContactManager:
             return None
     
     def search_by_keyword(self, keyword):
-        """Search for contacts using substring matching (naive approach)."""
         keyword = keyword.lower()
         matches = []
         
@@ -99,7 +96,6 @@ class ContactManager:
             return []
     
     def display_all_forward(self):
-        """Display all contacts in forward order (insertion order)."""
         contacts = self.linked_list.display_forward()
         if contacts:
             print("All contacts (forward):")
@@ -109,7 +105,6 @@ class ContactManager:
             print("No contacts in the system.")
     
     def display_all_backward(self):
-        """Display all contacts in backward order."""
         contacts = self.linked_list.display_backward()
         if contacts:
             print("All contacts (backward):")
@@ -117,14 +112,9 @@ class ContactManager:
                 print(f"  {i}. {contact}")
         else:
             print("No contacts in the system.")
-    
-    def get_contact_count(self):
-        """Return the number of contacts."""
-        return len(self.hash_table)
 
 
 def main():
-    """Interactive menu-driven contact management system."""
     manager = ContactManager()
     
     while True:
@@ -177,7 +167,7 @@ def main():
             break
         
         else:
-            print("Invalid option. Please try again.")
+            print("Please try again.")
 
 
 if __name__ == "__main__":
