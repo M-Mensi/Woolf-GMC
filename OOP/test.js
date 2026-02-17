@@ -1,6 +1,5 @@
 const { Product, ShoppingCart } = require('./index');
 
-// --- Demo / Tests ---
 // Create products
 const p1 = new Product(1, 'T-shirt', 19.99);
 const p2 = new Product(2, 'Jeans', 49.5);
