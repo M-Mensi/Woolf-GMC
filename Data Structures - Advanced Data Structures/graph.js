@@ -1,7 +1,7 @@
 // Graph implementation using adjacency list
 class Graph {
   constructor(directed = false) {
-    this.adj = new Map(); // vertex -> Set(neighbors)
+    this.adj = new Map();
     this.directed = directed;
   }
 
@@ -34,7 +34,7 @@ class Graph {
     }
   }
 
-  // Depth-First Search (iterative)
+  // Depth-First Search
   dfs(start) {
     const visited = new Set();
     const order = [];
@@ -45,7 +45,6 @@ class Graph {
       if (!this.adj.has(v) || visited.has(v)) continue;
       visited.add(v);
       order.push(v);
-      // push neighbors in reverse iteration order to visit in natural order
       const neighbors = [...this.adj.get(v)];
       for (let i = neighbors.length - 1; i >= 0; i--) {
         const nb = neighbors[i];
@@ -88,7 +87,6 @@ class Graph {
 (function runTests() {
   console.log('\n--- Undirected Graph Test ---');
   const g = new Graph(false);
-  // add edges (will create vertices implicitly)
   g.addEdge('A', 'B');
   g.addEdge('A', 'C');
   g.addEdge('B', 'C');
@@ -96,7 +94,6 @@ class Graph {
 
   g.printGraph();
 
-  // Traversals starting from 'A'
   g.dfs('A');
   g.bfs('A');
 
@@ -116,7 +113,4 @@ class Graph {
   dg.dfs(1);
   dg.bfs(1);
 
-  console.log('\nTests completed.');
 })();
-
-module.exports = Graph;
