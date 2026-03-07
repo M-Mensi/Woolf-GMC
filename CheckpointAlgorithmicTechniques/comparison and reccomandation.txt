@@ -1,0 +1,11 @@
+The greedy algorithm is dramatically faster.
+It sorts the tasks in O(n log n) time and then makes a single linear pass, resulting in near‑instantaneous execution even for 10,000 tasks (a few milliseconds). In contrast, the brute‑force algorithm explores all subsets of tasks, leading to O(2ⁿ) time complexity.
+For n=20, that’s over a million combinations; for n=10,000, the number of combinations is astronomically large and cannot be computed in any practical timeframe.
+The exponential explosion makes brute‑force completely infeasible for large inputs.
+
+
+Recommendation: Use the greedy algorithm (earliest end time).
+
+It is provably optimal for the problem of maximizing the number of non‑overlapping intervals.
+It runs in O(n log n) time, which is fast enough for thousands of tasks per second (as required by the real‑time system).
+The code is concise, easy to verify, and requires minimal memory.
