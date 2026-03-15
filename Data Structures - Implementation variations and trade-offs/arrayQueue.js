@@ -1,14 +1,7 @@
 // Array-based Queue (fixed size)
-// Implements a circular buffer to utilize the fixed-size array efficiently.
 
 class ArrayQueue {
-  /**
-   * @param {number} capacity
-   */
   constructor(capacity = 10) {
-    if (!Number.isInteger(capacity) || capacity <= 0) {
-      throw new Error("Capacity must be a positive integer");
-    }
     this._items = new Array(capacity);
     this._head = 0; // index of next element to dequeue
     this._tail = 0; // index where next element will be enqueued
@@ -18,7 +11,8 @@ class ArrayQueue {
 
   enqueue(element) {
     if (this._size === this._capacity) {
-      throw new Error("Queue is full");
+      console.log("Queue is full");
+      return;
     }
     this._items[this._tail] = element;
     this._tail = (this._tail + 1) % this._capacity;
@@ -27,7 +21,8 @@ class ArrayQueue {
 
   dequeue() {
     if (this.isEmpty()) {
-      throw new Error("Queue is empty");
+      console.log("Queue is empty");
+      return;
     }
     const value = this._items[this._head];
     this._items[this._head] = undefined;
@@ -38,7 +33,8 @@ class ArrayQueue {
 
   peek() {
     if (this.isEmpty()) {
-      throw new Error("Queue is empty");
+      console.log("Queue is empty");
+      return;
     }
     return this._items[this._head];
   }

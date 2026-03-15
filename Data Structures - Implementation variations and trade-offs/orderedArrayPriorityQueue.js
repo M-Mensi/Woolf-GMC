@@ -1,6 +1,4 @@
 // Ordered Array-based Priority Queue
-// Maintains the underlying array sorted by priority (ascending).
-// Insert is O(n) due to shifting elements, but peekMin / extractMin are O(1) or O(n) respectively.
 
 class OrderedArrayPriorityQueue {
   constructor() {
@@ -10,19 +8,12 @@ class OrderedArrayPriorityQueue {
   _getPriority(item) {
     if (item && typeof item === "object" && "priority" in item) {
       return item.priority;
+    } else {
+      console.log("Invalid item for priority queue.");
     }
-    if (typeof item === "number") {
-      return item;
-    }
-    throw new Error(
-      'Element must be a number or an object with a numeric "priority" property',
-    );
   }
 
   insert(element) {
-    if (element === undefined) {
-      throw new Error("Cannot insert undefined");
-    }
     const priority = this._getPriority(element);
     // find insertion point (first element with strictly greater priority)
     let i = 0;
@@ -37,14 +28,16 @@ class OrderedArrayPriorityQueue {
 
   peekMin() {
     if (this.isEmpty()) {
-      throw new Error("Priority queue is empty");
+      console.log("Priority queue is empty");
+      return;
     }
     return this._items[0];
   }
 
   extractMin() {
     if (this.isEmpty()) {
-      throw new Error("Priority queue is empty");
+      console.log("Priority queue is empty");
+      return;
     }
     return this._items.shift();
   }

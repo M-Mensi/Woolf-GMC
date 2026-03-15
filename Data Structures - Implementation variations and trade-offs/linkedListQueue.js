@@ -1,5 +1,4 @@
 // Linked List-based Queue (dynamic size)
-// Uses a singly linked list to allow unbounded growth.
 
 class LinkedListNode {
   constructor(value) {
@@ -30,7 +29,8 @@ class LinkedListQueue {
 
   dequeue() {
     if (this.isEmpty()) {
-      throw new Error("Queue is empty");
+      console.log("Queue is empty");
+      return;
     }
     const value = this._head.value;
     this._head = this._head.next;
@@ -44,7 +44,8 @@ class LinkedListQueue {
 
   peek() {
     if (this.isEmpty()) {
-      throw new Error("Queue is empty");
+      console.log("Queue is empty");
+      return;
     }
     return this._head.value;
   }
