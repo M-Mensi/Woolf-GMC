@@ -1,15 +1,9 @@
-/**
- * Checks whether a string is a palindrome (recursive), ignoring spaces, punctuation, and capitalization.
- *
- * @param {string} input
- * @returns {boolean}
- */
 function isPalindrome(input) {
   if (typeof input !== "string") {
-    throw new TypeError("input must be a string");
+    console.log("input must be a string");
+    return null;
   }
 
-  // Normalize: remove non-alphanumeric characters and lowercase
   const normalized = input.toLowerCase().replace(/[^a-z0-9]/g, "");
 
   function check(left, right) {
@@ -20,5 +14,3 @@ function isPalindrome(input) {
 
   return check(0, normalized.length - 1);
 }
-
-module.exports = { isPalindrome };
