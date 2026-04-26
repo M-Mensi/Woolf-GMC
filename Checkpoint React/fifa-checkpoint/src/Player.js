@@ -7,7 +7,7 @@ const Player = ({
   nationality = "Unknown",
   jerseyNumber = 0,
   age = 0,
-  image = "https://via.placeholder.com/150"
+  image = "https://via.placeholder.com/150",
 }) => {
   const cardStyle = {
     width: "18rem",
@@ -15,29 +15,29 @@ const Player = ({
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
     borderRadius: "10px",
     transition: "transform 0.3s ease, boxShadow 0.3s ease",
-    cursor: "pointer"
+    cursor: "pointer",
   };
 
   const imageStyle = {
     height: "200px",
-    objectFit: "cover"
+    objectFit: "cover",
   };
 
   const cardBodyStyle = {
-    textAlign: "center"
+    textAlign: "center",
   };
 
   const titleStyle = {
     fontSize: "1.5rem",
     fontWeight: "bold",
     color: "#333",
-    marginBottom: "10px"
+    marginBottom: "10px",
   };
 
   const textStyle = {
     color: "#666",
     marginBottom: "8px",
-    fontSize: "0.95rem"
+    fontSize: "0.95rem",
   };
 
   const jerseyStyle = {
@@ -49,7 +49,7 @@ const Player = ({
     height: "40px",
     lineHeight: "40px",
     fontWeight: "bold",
-    marginTop: "10px"
+    marginTop: "10px",
   };
 
   return (
