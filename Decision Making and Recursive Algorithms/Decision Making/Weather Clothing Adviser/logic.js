@@ -1,38 +1,32 @@
-/**
- * Returns clothing advice based on temperature and whether it is raining.
- *
- * @param {number} temperatureCelsius
- * @param {boolean} isRaining
- * @returns {string}
- */
+
 function getClothingAdvice(temperatureCelsius, isRaining) {
   if (
     typeof temperatureCelsius !== "number" ||
     Number.isNaN(temperatureCelsius)
   ) {
-    throw new TypeError("temperature must be a number");
+    console.log("temperature must be a number");
+    return null;
   }
   if (typeof isRaining !== "boolean") {
-    throw new TypeError("isRaining must be a boolean");
+    console.log("isRaining must be a boolean");
+    return null;
   }
 
-  const layers = [];
+  const clothes = [];
 
   if (temperatureCelsius <= 0) {
-    layers.push("heavy coat", "hat", "gloves");
+    clothes.push("heavy coat", "hat", "gloves");
   } else if (temperatureCelsius <= 12) {
-    layers.push("coat or jacket", "long sleeves");
+    clothes.push("coat or jacket", "long sleeves");
   } else if (temperatureCelsius <= 22) {
-    layers.push("light jacket or sweater");
+    clothes.push("light jacket or sweater");
   } else {
-    layers.push("t-shirt or short sleeves");
+    clothes.push("t-shirt or short sleeves");
   }
 
   if (isRaining) {
-    layers.push("rain jacket or umbrella");
+    clothes.push("rain jacket or umbrella");
   }
 
-  return `Recommended: ${layers.join(", ")}.`;
+  return `Recommended: ${clothes.join(", ")}.`;
 }
-
-module.exports = { getClothingAdvice };
