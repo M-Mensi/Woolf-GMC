@@ -9,7 +9,7 @@ const PlayersList = () => {
     justifyContent: "center",
     padding: "20px",
     backgroundColor: "#f5f5f5",
-    minHeight: "100vh"
+    minHeight: "100vh",
   };
 
   const headingStyle = {
@@ -19,7 +19,7 @@ const PlayersList = () => {
     fontWeight: "bold",
     color: "#333",
     marginBottom: "30px",
-    marginTop: "20px"
+    marginTop: "20px",
   };
 
   return (

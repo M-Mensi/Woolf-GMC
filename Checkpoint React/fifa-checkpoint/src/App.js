@@ -1,5 +1,5 @@
-import './App.css';
-import PlayersList from './PlayersList';
+import "./App.css";
+import PlayersList from "./PlayersList";
 
 function App() {
   return (
