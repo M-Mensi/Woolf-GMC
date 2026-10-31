@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Shopping Cart</title>
+	<style>
+		:root {
+			font-family: Arial, sans-serif;
+			color: #222;
+			background: #f4f6f8;
+		}
+
+		body {
+			max-width: 760px;
+			margin: 40px auto;
+			padding: 0 20px;
+		}
+
+		h1 {
+			margin-bottom: 8px;
+		}
+
+		.card {
+			margin-top: 20px;
+			padding: 20px;
+			border-radius: 8px;
+			background: white;
+			box-shadow: 0 2px 8px #00000012;
+		}
+
+		form {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: end;
+			gap: 12px;
+		}
+
+		label {
+			display: grid;
+			gap: 6px;
+		}
+
+		select,
+		input,
+		button {
+			min-height: 38px;
+			padding: 8px 10px;
+			border: 1px solid #ccd2d8;
+			border-radius: 5px;
+			font: inherit;
+		}
+
+		button {
+			cursor: pointer;
+			border-color: #2459a6;
+			background: #2459a6;
+			color: white;
+		}
+
+		button:hover {
+			background: #194783;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			text-align: left;
+		}
+
+		th,
+		td {
+			padding: 12px 8px;
+			border-bottom: 1px solid #e5e8eb;
+		}
+
+		th:last-child,
+		td:last-child {
+			text-align: right;
+		}
+
+		.remove-button {
+			min-height: 30px;
+			padding: 4px 8px;
+			border-color: #a83232;
+			background: #a83232;
+		}
+
+		.summary {
+			display: flex;
+			justify-content: space-between;
+			margin-top: 16px;
+			font-weight: bold;
+		}
+
+		#empty-message {
+			color: #626b75;
+		}
+
+		.visually-hidden {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			padding: 0;
+			margin: -1px;
+			overflow: hidden;
+			clip: rect(0, 0, 0, 0);
+			white-space: nowrap;
+			border: 0;
+		}
+
+		@media (max-width: 520px) {
+			body {
+				margin-top: 24px;
+			}
+
+			.card {
+				padding: 14px;
+			}
+
+			th,
+			td {
+				padding: 10px 4px;
+				font-size: 14px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main>
+		<h1>Shopping Cart</h1>
+		<p>Add products and manage your cart.</p>
+
+		<section class="card" aria-labelledby="add-heading">
+			<h2 id="add-heading">Add a product</h2>
+			<form id="add-form">
+				<label>
+					Product
+					<select id="product" required></select>
+				</label>
+				<label>
+					Quantity
+					<input id="quantity" type="number" min="1" step="1" value="1" required>
+				</label>
+				<button type="submit">Add to cart</button>
+			</form>
+		</section>
+
+		<section class="card" aria-labelledby="cart-heading">
+			<h2 id="cart-heading">Your cart</h2>
+			<p id="empty-message">Your cart is empty.</p>
+			<table id="cart-table" hidden>
+				<thead>
+					<tr>
+						<th scope="col">Product</th>
+						<th scope="col">Price</th>
+						<th scope="col">Quantity</th>
+						<th scope="col">Subtotal</th>
+						<th scope="col"><span class="visually-hidden">Actions</span></th>
+					</tr>
+				</thead>
+				<tbody id="cart-items"></tbody>
+			</table>
+			<div class="summary">
+				<span id="item-count">0 items</span>
+				<span id="cart-total">$0.00</span>
+			</div>
+		</section>
+	</main>
+
+	<script src="./index.js"></script>
+	<script>
+		const products = [
+			new Product(1, 'T-shirt', 19.99),
+			new Product(2, 'Jeans', 49.50),
+			new Product(3, 'Cap', 9.25)
+		];
+		const cart = new ShoppingCart();
+		const productSelect = document.getElementById('product');
+		const quantityInput = document.getElementById('quantity');
+		const cartItems = document.getElementById('cart-items');
+		const cartTable = document.getElementById('cart-table');
+		const emptyMessage = document.getElementById('empty-message');
+		const itemCount = document.getElementById('item-count');
+		const cartTotal = document.getElementById('cart-total');
+
+		const money = amount => `$${amount.toFixed(2)}`;
+
+		products.forEach(product => {
+			const option = document.createElement('option');
+			option.value = product.id;
+			option.textContent = `${product.name} - ${money(product.price)}`;
+			productSelect.appendChild(option);
+		});
+
+		function renderCart() {
+			cartItems.replaceChildren();
+
+			cart.items.forEach(item => {
+				const row = document.createElement('tr');
+				const values = [
+					item.product.name,
+					money(item.product.price),
+					item.quantity,
+					money(item.totalPrice())
+				];
+
+				values.forEach(value => {
+					const cell = document.createElement('td');
+					cell.textContent = value;
+					row.appendChild(cell);
+				});
+
+				const actionCell = document.createElement('td');
+				const removeButton = document.createElement('button');
+				removeButton.type = 'button';
+				removeButton.className = 'remove-button';
+				removeButton.textContent = 'Remove one';
+				removeButton.setAttribute('aria-label', `Remove one ${item.product.name}`);
+				removeButton.addEventListener('click', () => {
+					cart.removeItem(item.product.id, 1);
+					renderCart();
+				});
+				actionCell.appendChild(removeButton);
+				row.appendChild(actionCell);
+				cartItems.appendChild(row);
+			});
+
+			const total = cart.items.reduce((sum, item) => sum + item.totalPrice(), 0);
+			const totalItems = cart.getTotalItems();
+			cartTable.hidden = cart.items.length === 0;
+			emptyMessage.hidden = cart.items.length !== 0;
+			itemCount.textContent = `${totalItems} ${totalItems === 1 ? 'item' : 'items'}`;
+			cartTotal.textContent = money(total);
+		}
+
+		document.getElementById('add-form').addEventListener('submit', event => {
+			event.preventDefault();
+			const product = products.find(item => item.id === Number(productSelect.value));
+			const quantity = Number(quantityInput.value);
+
+			if (!product || !Number.isInteger(quantity) || quantity < 1) {
+				return;
+			}
+
+			cart.addItem(product, quantity);
+			quantityInput.value = '1';
+			renderCart();
+		});
+	</script>
+</body>
+</html>

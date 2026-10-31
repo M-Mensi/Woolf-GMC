@@ -75,6 +75,10 @@ class ShoppingCart {
 	}
 }
 
-// Export classes for external use
-module.exports = { Product, ShoppingCartItem, ShoppingCart };
-
+// Export classes for Node.js and expose them to the browser UI.
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = { Product, ShoppingCartItem, ShoppingCart };
+} else {
+	globalThis.Product = Product;
+	globalThis.ShoppingCart = ShoppingCart;
+}
