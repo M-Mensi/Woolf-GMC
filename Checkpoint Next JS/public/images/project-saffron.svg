@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="480" viewBox="0 0 720 480" fill="none">
+  <rect width="720" height="480" rx="18" fill="#E9C9A6"/>
+  <rect x="37" y="35" width="646" height="410" rx="18" fill="#FBF3E7"/>
+  <rect x="37" y="35" width="646" height="44" rx="18" fill="#fffaf1"/>
+  <circle cx="63" cy="57" r="5" fill="#D8A394"/>
+  <circle cx="80" cy="57" r="5" fill="#E9C47D"/>
+  <circle cx="97" cy="57" r="5" fill="#A4B887"/>
+  <text x="112" y="62" fill="#553724" font-family="Georgia,serif" font-size="12" font-weight="700">the saffron table</text>
+  <text x="455" y="61" fill="#745A48" font-family="Arial,sans-serif" font-size="9">MENU</text>
+  <text x="511" y="61" fill="#745A48" font-family="Arial,sans-serif" font-size="9">OUR STORY</text>
+  <rect x="585" y="47" width="77" height="21" rx="10" fill="#653B26"/>
+  <text x="596" y="61" fill="#FFF8EC" font-family="Arial,sans-serif" font-size="8">BOOK A TABLE</text>
+  <rect x="61" y="104" width="598" height="315" rx="12" fill="#F1E2CF"/>
+  <circle cx="537" cy="246" r="120" fill="#E9CDAA"/>
+  <circle cx="537" cy="246" r="91" fill="#FFFAF1"/>
+  <circle cx="537" cy="246" r="72" fill="#D7A859"/>
+  <path d="M480 249c18-32 44-40 70-20 23 18 28 44 14 65-19 26-54 21-74 2-17-16-22-29-10-47Z" fill="#72854E"/>
+  <path d="M492 227c15-12 28-14 40-7m8 63c16-16 27-19 38-16" stroke="#FBF0D8" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="566" cy="217" r="8" fill="#BD6846"/>
+  <circle cx="490" cy="275" r="7" fill="#BD6846"/>
+  <text x="92" y="160" fill="#A25D39" font-family="Arial,sans-serif" font-size="10" font-weight="700" letter-spacing="2">A PLACE AT OUR TABLE</text>
+  <text x="90" y="207" fill="#513522" font-family="Georgia,serif" font-size="36">Seasonal plates.</text>
+  <text x="90" y="247" fill="#513522" font-family="Georgia,serif" font-size="36">Stories worth sharing.</text>
+  <text x="92" y="279" fill="#806D5B" font-family="Arial,sans-serif" font-size="11">Thoughtful food, good company, a little extra warmth.</text>
+  <rect x="92" y="303" width="121" height="34" rx="4" fill="#633D2B"/>
+  <text x="108" y="325" fill="#FFF8EC" font-family="Arial,sans-serif" font-size="10" font-weight="700">SEE THE MENU  →</text>
+  <path d="M106 369c12-9 24-9 36 0s24 9 36 0 24-9 36 0 24 9 36 0" stroke="#D3A27A" stroke-width="2" stroke-linecap="round"/>
+</svg>

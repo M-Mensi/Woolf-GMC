@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="480" viewBox="0 0 720 480" fill="none">
+  <rect width="720" height="480" rx="18" fill="#D9E8D4"/>
+  <circle cx="621" cy="93" r="80" fill="#F6D68B"/>
+  <path d="M0 314c111-76 186-63 291-13 107 50 176 42 275-7 54-27 100-30 154-8v194H0V314Z" fill="#91BBA2"/>
+  <path d="M0 367c116-61 194-35 302 12 108 46 220 49 418-31v132H0V367Z" fill="#477F71"/>
+  <rect x="42" y="35" width="636" height="410" rx="18" fill="#F8F8F3" fill-opacity=".92"/>
+  <rect x="42" y="35" width="636" height="44" rx="18" fill="#fff"/>
+  <circle cx="66" cy="57" r="5" fill="#E7A599"/>
+  <circle cx="83" cy="57" r="5" fill="#E9CA78"/>
+  <circle cx="100" cy="57" r="5" fill="#9AC47E"/>
+  <rect x="126" y="52" width="72" height="9" rx="4.5" fill="#263A32"/>
+  <rect x="524" y="52" width="54" height="9" rx="4.5" fill="#A8B1A7"/>
+  <rect x="594" y="47" width="60" height="20" rx="10" fill="#C6F36B"/>
+  <text x="86" y="132" fill="#7A963F" font-family="Arial,sans-serif" font-size="12" font-weight="700" letter-spacing="2">FIND YOUR ELSEWHERE</text>
+  <text x="84" y="180" fill="#20362C" font-family="Arial,sans-serif" font-size="36" font-weight="700">A little further.</text>
+  <text x="86" y="204" fill="#65746A" font-family="Arial,sans-serif" font-size="11">A good trip starts with a place that feels like you.</text>
+  <rect x="86" y="224" width="114" height="33" rx="5" fill="#243A30"/>
+  <text x="104" y="245" fill="#fff" font-family="Arial,sans-serif" font-size="10" font-weight="700">Explore places  ↗</text>
+  <rect x="86" y="284" width="172" height="122" rx="10" fill="#F0E7D7"/>
+  <path d="M87 353c40-47 73-36 106-19 23 12 42 14 65 0v62H87v-43Z" fill="#76A894"/>
+  <path d="M87 371c46-21 75-6 105 13 21 13 43 12 66-2v24H87v-35Z" fill="#467B6B"/>
+  <circle cx="221" cy="316" r="18" fill="#F3C96F"/>
+  <rect x="274" y="292" width="80" height="8" rx="4" fill="#89958B"/>
+  <rect x="274" y="310" width="116" height="14" rx="5" fill="#243A30"/>
+  <rect x="274" y="337" width="91" height="7" rx="3.5" fill="#B7C0B7"/>
+  <rect x="274" y="352" width="78" height="7" rx="3.5" fill="#B7C0B7"/>
+  <rect x="274" y="378" width="57" height="18" rx="9" fill="#E7EDD9"/>
+  <text x="285" y="391" fill="#587442" font-family="Arial,sans-serif" font-size="8">VIEW DETAILS</text>
+</svg>
