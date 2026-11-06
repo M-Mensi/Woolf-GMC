@@ -1,0 +1,9 @@
+{
+  "name": "async-programming-exercises",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node asyncTasks.js",
+    "test": "node --test"
+  }
+}
