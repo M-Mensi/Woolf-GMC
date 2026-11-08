@@ -1,0 +1,15 @@
+{
+  "name": "mongoose-nodejs-vs-mongodb",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mongoose model and CRUD exercise",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "mongodb": "^4.17.2",
+    "mongoose": "^6.13.8"
+  }
+}
