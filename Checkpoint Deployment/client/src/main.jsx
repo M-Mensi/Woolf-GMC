@@ -1,358 +1,305 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
 
-const experience = [
-  {
-    role: "Strategic Account Manager",
-    company: "Cognizant",
-    date: "Feb 2026 — Present",
-    description:
-      "Build and optimize full-funnel campaigns for global brands, connecting account strategy with measurable performance and long-term client growth.",
-    tags: ["Account strategy", "Campaign optimization", "Client growth"],
-  },
-  {
-    role: "Small & Medium Client Sales",
-    company: "Snap Inc.",
-    date: "Mar 2026 — Present",
-    description:
-      "Grow advertiser investment across MENA, with an active portfolio generating approximately $1M in quarterly revenue.",
-    tags: ["MENA", "Digital advertising", "Revenue growth"],
-  },
-  {
-    role: "Customer Care Specialist",
-    company: "Vista",
-    date: "Jul 2025 — Jan 2026",
-    description:
-      "Supported global clients with design and print services, resolving account issues and building loyalty through thoughtful service.",
-    tags: ["Customer experience", "CRM"],
-  },
-  {
-    role: "Customer Support Advisor",
-    company: "Concentrix",
-    date: "Feb 2025 — Jul 2025",
-    description:
-      "Resolved customer inquiries with clear communication, efficient problem-solving, and a focus on excellent service.",
-    tags: ["Customer support", "Problem-solving"],
-  },
-  {
-    role: "Media Buyer & Digital Marketing Specialist",
-    company: "Apex Shop",
-    date: "Aug 2024 — Jan 2025",
-    description:
-      "Managed and tested Meta campaigns, using performance insights to improve CPC, CPA, CPM, and return on ad spend.",
-    tags: ["Meta Ads", "A/B testing", "Paid media"],
-  },
-  {
-    role: "Mobile & Web Application Developer",
-    company: "3S Standard Sharing Software",
-    date: "Jan 2024 — Jul 2024",
-    description:
-      "Built a Flutter and Firebase ride-hailing app and contributed to an Angular, Node.js, and MongoDB budget-planning application.",
-    tags: ["Flutter", "Firebase", "Angular", "Node.js", "MongoDB"],
-  },
-  {
-    role: "Project Support Coordinator",
-    company: "CERI",
-    date: "Jul 2023 — Aug 2023",
-    description:
-      "Supported industrial project schedules, team coordination, and technical progress documentation.",
-    tags: ["Project coordination", "Reporting"],
-  },
-  {
-    role: "Junior Web Developer",
-    company: "Ulmus Technologies",
-    date: "Jan 2023 — Feb 2023",
-    description:
-      "Built and customized the company website with WordPress, adapting themes and functionality to business needs.",
-    tags: ["WordPress", "Web development"],
-  },
-  {
-    role: "Software Database Developer",
-    company: "Linedata",
-    date: "Jan 2022 — Feb 2022",
-    description:
-      "Developed Python and Flask database workflows and collaborated on software solutions in a Scrum team.",
-    tags: ["Python", "Flask", "Databases"],
-  },
-];
-
-const skills = [
-  "Account strategy",
-  "Digital advertising",
-  "Campaign analytics",
-  "Customer experience",
-  "Node.js",
-  "MongoDB",
-  "Angular",
-  "Flutter",
-  "Firebase",
-  "Python & Flask",
-  "WordPress",
-];
-
-const certifications = [
-  "Emotional Intelligence Practitioner",
-  "Risk Management Expert",
-  "AIGPE™ Six Sigma White Belt",
-  "Facebook Marketing & Advertising",
-  "Marketing Analytics",
-];
-
-function Arrow() {
-  return <span aria-hidden="true">↗</span>;
+function localDate(date = new Date()) {
+  return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+    .toISOString()
+    .slice(0, 10);
 }
 
-function ContactForm() {
-  const [status, setStatus] = useState("");
-  const [sending, setSending] = useState(false);
+function clock(date) {
+  return new Intl.DateTimeFormat(undefined, {
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(new Date(date));
+}
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    const form = event.currentTarget;
-    setSending(true);
-    setStatus("");
-
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(Object.fromEntries(new FormData(form))),
-      });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.error || "Could not send your message.");
-      form.reset();
-      setStatus(result.message);
-    } catch (error) {
-      setStatus(error.message);
-    } finally {
-      setSending(false);
-    }
+async function readJson(response) {
+  if (!response.headers.get("content-type")?.includes("application/json")) {
+    throw new Error("Attendance API unavailable. Check the backend and MongoDB connection.");
   }
+  return response.json();
+}
 
+function duration(record) {
+  const minutes = record.checkOut
+    ? record.minutesWorked
+    : Math.max(0, Math.floor((Date.now() - new Date(record.checkIn)) / 60000));
+  return `${Math.floor(minutes / 60)}h ${String(minutes % 60).padStart(2, "0")}m`;
+}
+
+function Icon({ name }) {
+  const icons = {
+    grid: <><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></>,
+    team: <><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="10" cy="7" r="4" /><path d="M20 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></>,
+    clock: <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>,
+    chart: <><path d="M3 3v18h18" /><path d="m19 9-5 5-4-4-5 5" /></>,
+    search: <><circle cx="11" cy="11" r="7" /><path d="m20 20-4-4" /></>,
+    check: <path d="m5 12 4 4L19 6" />,
+    exit: <><path d="M10 17l5-5-5-5M15 12H3" /><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6" /></>,
+  };
   return (
-    <form className="contact-form" onSubmit={handleSubmit}>
-      <label>
-        Your name
-        <input name="name" autoComplete="name" maxLength="100" required />
-      </label>
-      <label>
-        Email address
-        <input
-          name="email"
-          type="email"
-          autoComplete="email"
-          maxLength="254"
-          required
-        />
-      </label>
-      <label>
-        What would you like to talk about?
-        <textarea name="message" rows="4" maxLength="5000" required />
-      </label>
-      <button className="button button-dark" type="submit" disabled={sending}>
-        {sending ? "Sending…" : "Send message"} <Arrow />
-      </button>
-      <p className="form-status" role="status" aria-live="polite">
-        {status}
-      </p>
-    </form>
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {icons[name]}
+    </svg>
   );
 }
 
 function App() {
+  const [date, setDate] = useState(localDate());
+  const [records, setRecords] = useState([]);
+  const [summary, setSummary] = useState(null);
+  const [name, setName] = useState("");
+  const [role, setRole] = useState("");
+  const [search, setSearch] = useState("");
+  const [message, setMessage] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  const load = useCallback(async () => {
+    try {
+      const [listResponse, summaryResponse] = await Promise.all([
+        fetch(`/api/attendance?date=${date}`),
+        fetch(`/api/attendance/summary?date=${date}`),
+      ]);
+      const list = await readJson(listResponse);
+      const totals = await readJson(summaryResponse);
+      if (!listResponse.ok) throw new Error(list.error);
+      if (!summaryResponse.ok) throw new Error(totals.error);
+      setRecords(list);
+      setSummary(totals);
+      setMessage("");
+    } catch (error) {
+      setMessage(error.message || "Could not connect to the attendance server.");
+    }
+  }, [date]);
+
+  useEffect(() => {
+    load();
+    const timer = setInterval(load, 60000);
+    return () => clearInterval(timer);
+  }, [load]);
+
+  const filtered = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    return records.filter((record) =>
+      `${record.name} ${record.role}`.toLowerCase().includes(query)
+    );
+  }, [records, search]);
+
+  async function checkIn(event) {
+    event.preventDefault();
+    setBusy(true);
+    setMessage("");
+    try {
+      const response = await fetch("/api/attendance/check-in", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, role, workDate: date }),
+      });
+      const result = await readJson(response);
+      if (!response.ok) throw new Error(result.error);
+      setName("");
+      setRole("");
+      await load();
+      setMessage(`${result.name} checked in.`);
+    } catch (error) {
+      setMessage(error.message || "Could not check in.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function checkOut(id) {
+    setBusy(true);
+    setMessage("");
+    try {
+      const response = await fetch(`/api/attendance/${id}/check-out`, {
+        method: "POST",
+      });
+      const result = await readJson(response);
+      if (!response.ok) throw new Error(result.error);
+      await load();
+      setMessage(`${result.name} checked out.`);
+    } catch (error) {
+      setMessage(error.message || "Could not check out.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  const working = records.filter((record) => !record.checkOut).length;
+  const completed = records.length - working;
+  const ratio = records.length ? Math.round((working / records.length) * 100) : 0;
+  const chartMax = Math.max(1, ...(summary?.week || []).map((day) => day.employees));
+  const formattedDate = new Intl.DateTimeFormat(undefined, {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  }).format(new Date(`${date}T12:00:00`));
+
   return (
-    <>
-      <header className="topbar">
-        <a className="wordmark" href="#home" aria-label="Mohamed Mensi home">
-          MM<span>.</span>
+    <div className="app-shell">
+      <aside className="sidebar">
+        <a className="brand" href="#" aria-label="Shiftly home">
+          <span className="brand-icon"><Icon name="clock" /></span>
+          <span>shiftly<span className="brand-dot">.</span></span>
         </a>
-        <nav aria-label="Main navigation">
-          <a href="#about">About</a>
-          <a href="#experience">Experience</a>
-          <a href="#contact">Contact</a>
+        <p className="nav-heading">WORKSPACE</p>
+        <nav className="side-nav" aria-label="Main navigation">
+          <a className="nav-item active" href="#overview"><Icon name="grid" /> Overview</a>
+          <a className="nav-item" href="#attendance"><Icon name="team" /> Attendance</a>
+          <a className="nav-item" href="#insights"><Icon name="chart" /> Insights</a>
         </nav>
-        <a
-          className="linkedin-link"
-          href="https://www.linkedin.com/in/mensimed/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          LinkedIn <Arrow />
-        </a>
-      </header>
+        <div className="sidebar-bottom">
+          <div className="workspace-badge">SB</div>
+          <div><strong>Small business</strong><span>Team workspace</span></div>
+          <span className="workspace-menu">···</span>
+        </div>
+      </aside>
 
-      <main>
-        <section className="hero" id="home">
-          <div className="hero-copy">
-            <p className="eyebrow"><span className="live-dot" /> Tunis, Tunisia · Strategy, media &amp; technology</p>
-            <h1>
-              Growth starts
-              <br />
-              with <em>people.</em>
-            </h1>
-            <p className="hero-summary">
-              I’m Mohamed — account manager, digital marketer, and software
-              developer. I bring strategy, technology, and human connection
-              together to help businesses grow.
-            </p>
-            <div className="hero-actions">
-              <a className="button button-dark" href="#contact">
-                Let’s talk <Arrow />
-              </a>
-              <a className="text-link" href="#experience">
-                Explore my experience <span aria-hidden="true">↓</span>
-              </a>
-            </div>
+      <main className="main-content" id="overview">
+        <header className="topbar">
+          <div className="breadcrumb">Workspace <span>/</span> Overview</div>
+          <div className="topbar-right">
+            <span className="today-pill"><i /> Attendance is live</span>
+            <div className="avatar">SB</div>
           </div>
-          <div className="hero-note">
-            <span className="note-mark">“</span>
-            <p>
-              Data finds the opportunity.
-              <br />
-              Empathy makes it matter.
-            </p>
-            <span className="note-caption">MY APPROACH</span>
-          </div>
-          <div className="hero-index">01 / 04</div>
-        </section>
+        </header>
 
-        <section className="intro section-wrap" id="about">
-          <div className="section-label"><span>01</span> A little about me</div>
-          <div className="intro-content">
-            <h2>
-              Commercial thinking.
-              <br />
-              <em>Builder’s curiosity.</em>
-            </h2>
-            <div className="intro-body">
-              <p>
-                My work has moved from software and databases to paid media,
-                customer experience, and strategic account growth. That mix
-                helps me see both the human need and the systems behind it.
-              </p>
-              <p>
-                Today I help global brands make smarter advertising decisions
-                and grow with confidence. Alongside my work, I’m completing an
-                MSc in Computer Science: Software Engineering at Woolf.
-              </p>
-              <a
-                className="underlined-link"
-                href="https://www.linkedin.com/in/mensimed/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                More about my journey <Arrow />
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <section className="work-section" id="experience">
-          <div className="section-wrap">
-            <div className="section-label"><span>02</span> Career notes</div>
-            <div className="work-heading">
-              <h2>
-                Experience in
-                <br />
-                <em>motion.</em>
-              </h2>
-              <p>
-                A path across technology, service, and growth — always centered
-                on making the next interaction better.
-              </p>
-            </div>
-            <div className="timeline">
-              {experience.map((item, index) => (
-                <article className="timeline-item" key={`${item.company}-${item.role}`}>
-                  <div className="timeline-number">0{index + 1}</div>
-                  <div className="timeline-main">
-                    <p className="timeline-company">{item.company}</p>
-                    <h3>{item.role}</h3>
-                    <p className="timeline-description">{item.description}</p>
-                    <div className="tag-list">
-                      {item.tags.map((tag) => <span key={tag}>{tag}</span>)}
-                    </div>
-                  </div>
-                  <p className="timeline-date">{item.date}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="skills-section section-wrap">
-          <div className="section-label"><span>03</span> Tools &amp; strengths</div>
-          <div className="skills-content">
-            <h2>
-              Different tools.
-              <br />
-              <em>One human focus.</em>
-            </h2>
-            <div className="skill-list">
-              {skills.map((skill) => <span key={skill}>{skill}</span>)}
-            </div>
-            <div className="education">
-              <p className="mini-label">EDUCATION</p>
-              <div>
-                <strong>MSc, Computer Science — Software Engineering</strong>
-                <span>Woolf · Aug 2025–Dec 2026</span>
-              </div>
-              <div>
-                <strong>Bachelor of Technology, Computer Science</strong>
-                <span>ISET Charguia · Sep 2021–Jul 2024</span>
-              </div>
-            </div>
-            <div className="credentials">
-              <div>
-                <p className="mini-label">LANGUAGES</p>
-                <p>Arabic · Native &nbsp; English · Professional &nbsp; French · Professional</p>
-              </div>
-              <div>
-                <p className="mini-label">CERTIFICATIONS</p>
-                <p>{certifications.join(" · ")}</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="contact-section" id="contact">
-          <div className="section-wrap contact-wrap">
+        <div className="page-content">
+          <section className="welcome-row">
             <div>
-              <div className="section-label"><span>04</span> Start a conversation</div>
-              <h2>
-                Good things
-                <br />
-                start with <em>hello.</em>
-              </h2>
-              <p className="contact-copy">
-                Have a role, a collaboration, or an interesting idea in mind?
-                I’d be glad to hear from you.
-              </p>
-              <a className="contact-email" href="mailto:mensi.med@yahoo.com">
-                mensi.med@yahoo.com <Arrow />
-              </a>
-              <p className="contact-location">Le Bardo, Tunis, Tunisia</p>
+              <p className="overline">{formattedDate}</p>
+              <h1>Team overview</h1>
+              <p className="subheading">A clear view of who's working and when.</p>
             </div>
-            <ContactForm />
-          </div>
-        </section>
-      </main>
+            <label className="date-picker">
+              <Icon name="clock" />
+              <input
+                aria-label="Attendance date"
+                type="date"
+                value={date}
+                onChange={(event) => setDate(event.target.value)}
+              />
+            </label>
+          </section>
 
-      <footer className="footer">
-        <a className="wordmark" href="#home">MM<span>.</span></a>
-        <p>Thoughtful growth, built together.</p>
-        <a href="https://www.linkedin.com/in/mensimed/" target="_blank" rel="noreferrer">
-          LinkedIn <Arrow />
-        </a>
-        <span>© {new Date().getFullYear()} Mohamed Mensi</span>
-      </footer>
-    </>
+          <section className="metric-grid" aria-label="Attendance summary">
+            <article className="metric-card">
+              <div className="metric-heading"><span>Checked in now</span><span className="metric-icon green"><Icon name="team" /></span></div>
+              <strong className="metric-value">{summary?.working ?? "—"}</strong>
+              <span className="metric-caption"><i className="status-dot green-dot" /> Team members on shift</span>
+            </article>
+            <article className="metric-card">
+              <div className="metric-heading"><span>People today</span><span className="metric-icon blue"><Icon name="grid" /></span></div>
+              <strong className="metric-value">{summary?.employees ?? "—"}</strong>
+              <span className="metric-caption">Unique team members</span>
+            </article>
+            <article className="metric-card">
+              <div className="metric-heading"><span>Shifts completed</span><span className="metric-icon amber"><Icon name="check" /></span></div>
+              <strong className="metric-value">{completed}</strong>
+              <span className="metric-caption">Checked out for the day</span>
+            </article>
+            <article className="metric-card">
+              <div className="metric-heading"><span>Hours logged</span><span className="metric-icon purple"><Icon name="clock" /></span></div>
+              <strong className="metric-value">{summary?.hours ?? "—"}<small>h</small></strong>
+              <span className="metric-caption">Completed shifts today</span>
+            </article>
+          </section>
+
+          <section className="chart-grid" id="insights">
+            <article className="panel weekly-panel">
+              <div className="panel-heading">
+                <div><h2>Attendance trend</h2><p>Unique team members · last 7 days</p></div>
+                <span className="panel-icon"><Icon name="chart" /></span>
+              </div>
+              <div className="bar-chart" role="img" aria-label="Number of team members attending each of the last seven days">
+                {(summary?.week || []).map((day) => {
+                  const height = day.employees ? Math.max(8, (day.employees / chartMax) * 100) : 3;
+                  return (
+                    <div className="bar-column" key={day.date} title={`${day.employees} team members`}>
+                      <span className="bar-count">{day.employees || ""}</span>
+                      <div className="bar-track"><div className={`bar-fill ${day.date === date ? "bar-today" : ""}`} style={{ height: `${height}%` }} /></div>
+                      <span className="bar-label">{new Intl.DateTimeFormat(undefined, { weekday: "short", timeZone: "UTC" }).format(new Date(`${day.date}T12:00:00Z`))}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </article>
+
+            <article className="panel status-panel">
+              <div className="panel-heading">
+                <div><h2>Today’s shifts</h2><p>Live attendance status</p></div>
+                <span className="live-label"><i /> LIVE</span>
+              </div>
+              <div className="donut-wrap">
+                <div className="donut" style={{ "--ratio": `${ratio}%` }}>
+                  <div><strong>{records.length}</strong><span>total shifts</span></div>
+                </div>
+              </div>
+              <div className="legend">
+                <span><i className="legend-green" /> Working <strong>{working}</strong></span>
+                <span><i className="legend-gray" /> Completed <strong>{completed}</strong></span>
+              </div>
+            </article>
+          </section>
+
+          <section className="attendance-section" id="attendance">
+            <div className="attendance-heading">
+              <div><h2>Team attendance</h2><p>Check in a team member or manage today's shifts.</p></div>
+              <span className="record-count">{records.length} {records.length === 1 ? "record" : "records"}</span>
+            </div>
+
+            <form className="checkin-form" onSubmit={checkIn}>
+              <div className="form-title"><span className="form-plus">+</span><div><strong>Quick check-in</strong><span>Start a new shift</span></div></div>
+              <label><span>Employee name</span><input value={name} onChange={(event) => setName(event.target.value)} maxLength="100" placeholder="e.g. Alex Morgan" required /></label>
+              <label><span>Role <small>optional</small></span><input value={role} onChange={(event) => setRole(event.target.value)} maxLength="100" placeholder="e.g. Barista" /></label>
+              <button className="checkin-button" disabled={busy || !date}><Icon name="check" /> Check in</button>
+            </form>
+
+            <div className="table-toolbar">
+              <div className="table-title">Attendance log <span>{date}</span></div>
+              <label className="search-box"><Icon name="search" /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search team..." aria-label="Search attendance" /></label>
+            </div>
+            <div className="attendance-table-wrap">
+              <table className="attendance-table">
+                <thead><tr><th>EMPLOYEE</th><th>CHECK IN</th><th>CHECK OUT</th><th>HOURS</th><th>STATUS</th><th /></tr></thead>
+                <tbody>
+                  {filtered.map((record) => (
+                    <tr key={record._id}>
+                      <td><div className="employee-cell"><span className="employee-avatar">{record.name.split(/\s+/).map((part) => part[0]).slice(0, 2).join("").toUpperCase()}</span><span><strong>{record.name}</strong><small>{record.role || "Team member"}</small></span></div></td>
+                      <td>{clock(record.checkIn)}</td>
+                      <td>{record.checkOut ? clock(record.checkOut) : "—"}</td>
+                      <td>{duration(record)}</td>
+                      <td><span className={`attendance-status ${record.checkOut ? "completed-status" : "working-status"}`}><i />{record.checkOut ? "Completed" : "Working"}</span></td>
+                      <td>{record.checkOut ? null : <button className="checkout-button" disabled={busy} onClick={() => checkOut(record._id)}><Icon name="exit" /> Check out</button>}</td>
+                    </tr>
+                  ))}
+                  {!filtered.length && <tr><td className="empty-row" colSpan="6">{records.length ? "No team members match your search." : "No attendance yet. Check in your first team member above."}</td></tr>}
+                </tbody>
+              </table>
+            </div>
+            <p className="feedback" role="status" aria-live="polite">{message}</p>
+          </section>
+
+          <footer className="page-footer"><span>Shiftly · Simple attendance for small teams</span><span>Times shown in your local timezone</span></footer>
+        </div>
+      </main>
+    </div>
   );
 }
 
 createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <React.StrictMode><App /></React.StrictMode>
 );
