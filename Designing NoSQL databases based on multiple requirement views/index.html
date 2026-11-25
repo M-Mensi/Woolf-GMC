@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="MongoDB e-commerce schema designs for high-throughput transactions, availability, and analytics.">
+    <title>Commerce Data Design — NoSQL Schemas</title>
+    <style>
+      :root { color-scheme: light; --ink: #1c3028; --muted: #64746b; --paper: #f5f7f1; --green: #466c4e; --lime: #dcedb5; --line: #dce4d9; }
+      * { box-sizing: border-box; }
+      body { margin: 0; color: var(--ink); background: var(--paper); font: 16px/1.65 "Segoe UI", sans-serif; }
+      header, main, footer { width: min(940px, calc(100% - 40px)); margin: auto; }
+      header { padding: 70px 0 42px; }
+      .eyebrow { color: var(--green); font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+      h1, h2 { font-family: Georgia, serif; font-weight: 500; letter-spacing: -1px; line-height: 1.14; }
+      h1 { max-width: 700px; margin: 14px 0; font-size: clamp(42px, 8vw, 72px); }
+      h1 span { color: var(--green); font-style: italic; }
+      .lede { max-width: 650px; color: var(--muted); font-size: 18px; }
+      .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 30px 0; }
+      article { padding: 23px; border: 1px solid var(--line); background: #fff; }
+      article h2 { margin: 0 0 7px; font-size: 23px; }
+      article p { color: var(--muted); font-size: 14px; }
+      .links { display: flex; flex-wrap: wrap; gap: 10px; }
+      a.button { display: inline-block; padding: 10px 14px; border-radius: 3px; background: var(--ink); color: white; text-decoration: none; font-size: 13px; font-weight: 650; }
+      a.button.secondary { border: 1px solid var(--line); background: white; color: var(--ink); }
+      .callout { padding: 17px 20px; border-left: 4px solid #8eaa64; background: var(--lime); font-size: 14px; }
+      footer { padding: 20px 0 45px; color: var(--muted); font-size: 12px; }
+      :focus-visible { outline: 3px solid #759b59; outline-offset: 3px; }
+      @media (max-width: 600px) { header { padding-top: 45px; } .grid { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <header>
+      <p class="eyebrow">DATABASE DESIGN · MONGODB</p>
+      <h1>Commerce data,<br>designed to <span>scale.</span></h1>
+      <p class="lede">A query-led NoSQL design for product discovery and high-throughput orders, then a refactor for resilient service and sales analytics.</p>
+    </header>
+    <main>
+      <p class="callout"><strong>Two deployment levels:</strong> the free MongoDB Atlas cluster can run and demonstrate the unsharded collections and indexes. Shard-key setup and the high-throughput architecture require a sharded-capable cluster; Atlas Free does not provide sharded clusters.</p>
+      <div class="grid">
+        <article>
+          <h2>Initial schema</h2>
+          <p>Product catalog, customer documents, embedded order snapshots, query indexes, and the initial customer-hashed order sharding strategy.</p>
+          <div class="links">
+            <a class="button" href="./schemas/01-initial-schema.js">Schema script</a>
+            <a class="button secondary" href="./schemas/01-initial-sharding.js">Shard setup</a>
+          </div>
+        </article>
+        <article>
+          <h2>Refactored schema</h2>
+          <p>Time-bucketed order routing, replicated-shard consistency choices, immutable sales contributions, and pre-aggregated product/day metrics.</p>
+          <div class="links">
+            <a class="button" href="./schemas/02-refactored-schema.js">Schema script</a>
+            <a class="button secondary" href="./schemas/02-refactored-sharding.js">Shard setup</a>
+          </div>
+        </article>
+        <article>
+          <h2>Design reflection</h2>
+          <p>Trade-offs and outcomes in a concise reflection on sharding, availability, consistency and analytics.</p>
+          <a class="button secondary" href="./reflection-report.md">Read report</a>
+        </article>
+        <article>
+          <h2>Run and deploy</h2>
+          <p>MongoDB Atlas free-tier setup, local schema validation, free static hosting, limitations, and verified design references.</p>
+          <a class="button secondary" href="./README.md">Open instructions</a>
+        </article>
+      </div>
+    </main>
+    <footer>Educational schema design. Production sizing, security, migration testing and service-level commitments require workload-specific validation.</footer>
+  </body>
+</html>
