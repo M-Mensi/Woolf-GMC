@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f4ed">
+    <meta name="description" content="A neighborhood network that helps community groups redirect surplus food to people who can use it.">
+    <title>SharePlate — Good food stays in the community</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="SharePlate home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none"><path d="M7 17.5c0-6 4-10.5 9-10.5s9 4.5 9 10.5c0 3.9-3.1 7-7 7h-4c-3.9 0-7-3.1-7-7Z" stroke="currentColor" stroke-width="2.2"/><path d="M16 7c-1.6 4.1-1.4 8.2 0 12.2M12 15c2.6.1 4-.8 4-3.1M20 17c-1.4-.1-2.7.4-4 1.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </span>
+        <span>shareplate<span class="brand-period">.</span></span>
+      </a>
+      <nav class="header-nav" aria-label="Main navigation">
+        <a href="#listings">Find food</a>
+        <a href="#about">How it works</a>
+        <a class="nav-cta" href="#contribute">Offer surplus <span aria-hidden="true">↗</span></a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="status-dot"></span> A little less waste. A lot more good.</p>
+          <h1>Good food stays<br>in the <span>community.</span></h1>
+          <p class="hero-description">A simple way for neighborhood kitchens, shops and community groups to pass surplus food on to people who can use it.</p>
+          <a class="button button-dark" href="#listings">See what's available <span aria-hidden="true">↓</span></a>
+          <div class="hero-note">
+            <span class="avatar-stack" aria-hidden="true"><i>J</i><i>M</i><i>A</i></span>
+            <span>Local food, shared locally</span>
+          </div>
+        </div>
+        <div class="hero-art" aria-label="Illustration of fresh vegetables in a bowl">
+          <div class="art-sun"></div>
+          <div class="art-label">GOOD FOOD<br>DOES GOOD.</div>
+          <div class="art-bowl">
+            <span class="produce produce-tomato"></span><span class="produce produce-leaf"></span>
+            <span class="produce produce-orange"></span><span class="produce produce-carrot"></span>
+            <span class="produce produce-pepper"></span>
+            <div class="bowl"></div>
+          </div>
+          <span class="art-scribble">take what<br>you need <b>↙</b></span>
+        </div>
+      </section>
+
+      <section class="impact-strip" aria-label="SharePlate principles">
+        <div><span class="impact-icon">01</span><p><strong>Food first</strong><br>Good food is for people.</p></div>
+        <div><span class="impact-icon">02</span><p><strong>Close to home</strong><br>Share within your neighborhood.</p></div>
+        <div><span class="impact-icon">03</span><p><strong>Simple by design</strong><br>Find it. Claim it. Pick it up.</p></div>
+      </section>
+
+      <section class="listings-section" id="listings">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">THE COMMUNITY TABLE</p>
+            <h2>Freshly shared<span class="heading-period">.</span></h2>
+            <p class="section-description">Browse what's on offer nearby. Please confirm pickup details with the provider.</p>
+          </div>
+          <div class="listing-count" aria-live="polite"><span id="listing-count">—</span> <span>listings</span></div>
+        </div>
+        <div class="listing-tools">
+          <label class="search-box">
+            <span class="sr-only">Search listings</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.2 4.2"/></svg>
+            <input id="search-input" type="search" placeholder="Search food or neighborhood">
+          </label>
+          <div class="filter-group" role="group" aria-label="Filter by food type">
+            <button class="filter-chip is-active" data-category="all" type="button" aria-pressed="true">Everything</button>
+            <button class="filter-chip" data-category="produce" type="button" aria-pressed="false">Produce</button>
+            <button class="filter-chip" data-category="bakery" type="button" aria-pressed="false">Bakery</button>
+            <button class="filter-chip" data-category="prepared" type="button" aria-pressed="false">Prepared</button>
+            <button class="filter-chip" data-category="pantry" type="button" aria-pressed="false">Pantry</button>
+          </div>
+        </div>
+        <div id="listings-grid" class="listings-grid" aria-live="polite" aria-busy="true"></div>
+        <div id="empty-state" class="empty-state" hidden>
+          <span aria-hidden="true">✳</span>
+          <h3>No matching listings just yet.</h3>
+          <p>Try a different search or check back soon.</p>
+        </div>
+        <p id="load-error" class="notice notice-error" role="alert" hidden></p>
+      </section>
+
+      <section class="contribute-section" id="contribute">
+        <div class="contribute-art" aria-hidden="true">
+          <div class="contribute-circle"></div>
+          <span class="contribute-spark">✳</span>
+          <span class="contribute-arrow">↗</span>
+          <span class="contribute-word">SHARE<br>THE GOOD</span>
+        </div>
+        <div class="contribute-copy">
+          <p class="eyebrow">GOT A LITTLE EXTRA?</p>
+          <h2>Make someone's<br>day with it.</h2>
+          <p>Community kitchen, corner shop or market stall? Share safe, quality surplus and help it find a good home.</p>
+          <details class="contribute-details">
+            <summary class="button button-dark">List a food offer <span aria-hidden="true">↗</span></summary>
+            <form id="listing-form" class="listing-form">
+              <p class="form-intro">Coordinator access is required to publish an offer.</p>
+              <label>Coordinator key
+                <input name="adminKey" type="password" autocomplete="current-password" required>
+              </label>
+              <label>What are you sharing?
+                <input name="title" type="text" minlength="3" maxlength="80" placeholder="e.g. Seasonal vegetable boxes" required>
+              </label>
+              <div class="form-row">
+                <label>Food type
+                  <select name="category" required>
+                    <option value="produce">Produce</option><option value="bakery">Bakery</option>
+                    <option value="prepared">Prepared</option><option value="pantry">Pantry</option>
+                  </select>
+                </label>
+                <label>Portions
+                  <input name="portions" type="number" min="1" max="500" value="10" required>
+                </label>
+              </div>
+              <label>Neighborhood
+                <input name="neighborhood" type="text" minlength="2" maxlength="60" placeholder="e.g. North Market" required>
+              </label>
+              <label>Pickup by
+                <input name="pickupAt" type="datetime-local" required>
+              </label>
+              <label>Pickup notes
+                <textarea name="notes" rows="2" maxlength="280" placeholder="Pickup instructions and allergen information"></textarea>
+              </label>
+              <button class="button button-green" type="submit">Publish offer <span aria-hidden="true">↗</span></button>
+              <p class="form-message" role="status" aria-live="polite"></p>
+            </form>
+          </details>
+          <p class="safety-note">Only list food that is safe to share. Include accurate allergen and storage details.</p>
+        </div>
+      </section>
+
+      <section class="how-section" id="about">
+        <p class="eyebrow">A BETTER WAY TO PASS IT ON</p>
+        <h2>Good things happen<br>when we <span>share.</span></h2>
+        <div class="steps-grid">
+          <article><span class="step-number">01</span><h3>Find a good thing</h3><p>Browse available offers by type, neighborhood or pickup time.</p></article>
+          <article><span class="step-number">02</span><h3>Claim what you need</h3><p>Choose the number of portions. Availability updates for everyone.</p></article>
+          <article><span class="step-number">03</span><h3>Pick it up</h3><p>Follow the provider's notes and collect before the listed time.</p></article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">✳</span><span>shareplate<span class="brand-period">.</span></span></a>
+      <p>Neighbors helping good food find its next table.</p>
+      <span class="footer-tag">MADE FOR THE COMMON GOOD</span>
+    </footer>
+    <dialog id="claim-dialog" class="claim-dialog">
+      <form method="dialog" class="dialog-close"><button aria-label="Close dialog">×</button></form>
+      <p class="eyebrow">SAVE A PORTION</p>
+      <h2 id="claim-title">Claim this offer</h2>
+      <p id="claim-details"></p>
+      <form id="claim-form">
+        <label>Number of portions
+          <input name="portions" type="number" min="1" value="1" required>
+        </label>
+        <p class="claim-message" role="status" aria-live="polite"></p>
+        <button class="button button-green" type="submit">Confirm claim</button>
+      </form>
+      <p class="dialog-footnote">Please collect before the pickup time and follow any storage or allergen notes.</p>
+    </dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "shareplate-community",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A cloud-hosted neighborhood surplus-food sharing pilot",
+  "scripts": {
+    "dev": "wrangler pages dev .",
+    "test": "node --test",
+    "deploy": "wrangler pages deploy . --project-name shareplate-community"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
