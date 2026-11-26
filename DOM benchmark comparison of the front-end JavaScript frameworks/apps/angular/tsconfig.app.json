@@ -4,13 +4,10 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "types": [],
-    "allowJs": true,
-    "checkJs": false
+    "allowJs": false,
+    "checkJs": false,
+    "noEmit": true
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "src/**/*.spec.ts"
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts"]
 }
