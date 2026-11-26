@@ -1,0 +1,19 @@
+{
+  "name": "student-gradebook-qa",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "start": "node src/cli.js",
+    "test": "node --test",
+    "lint": "eslint src test",
+    "build": "node --check src/gradebook.js && node --check src/cli.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.15.0"
+  }
+}
