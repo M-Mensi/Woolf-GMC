@@ -1,0 +1,71 @@
+<main class="app-shell">
+  <div class="app-topline">
+    <a class="app-back" href="../../index.html">← Framework comparison</a>
+    <span class="framework-pill">Angular · signals + ngFor / ngIf</span>
+  </div>
+  <h1 class="app-heading">Angular task board</h1>
+  <p class="app-subtitle">Create, edit and remove prioritized tasks. The benchmark measures list rendering and DOM commits in this production-built app.</p>
+  <div class="app-columns">
+    <section class="panel" aria-labelledby="task-heading">
+      <h2 id="task-heading">Your tasks</h2>
+      <form class="task-form" (submit)="addTask($event)">
+        <label class="sr-only" for="new-task">Task name</label>
+        <input id="new-task" class="field" name="newTitle" [(ngModel)]="newTitle" maxlength="120" placeholder="What needs doing?" required>
+        <label class="sr-only" for="new-priority">Priority</label>
+        <select id="new-priority" class="field" name="newPriority" [(ngModel)]="newPriority">
+          <option value="low">Low priority</option>
+          <option value="medium">Medium priority</option>
+          <option value="high">High priority</option>
+        </select>
+        <button class="button button-primary" type="submit">Add task <span aria-hidden="true">+</span></button>
+      </form>
+      <p class="task-count" aria-live="polite">{{ tasks().length }} {{ tasks().length === 1 ? 'task' : 'tasks' }}</p>
+      <div *ngIf="tasks().length === 0" class="empty-list">Nothing on the list yet. Add a task or run the benchmark.</div>
+      <ul *ngIf="tasks().length > 0" class="task-list">
+        <li *ngFor="let task of tasks(); trackBy: trackTask" class="task-row">
+          <ng-container *ngIf="editingId === task.id; else taskView">
+            <div class="edit-fields">
+              <input class="field" aria-label="Edit task name" [(ngModel)]="editTitle" [ngModelOptions]="{standalone: true}" maxlength="120">
+              <select class="field" aria-label="Edit task priority" [(ngModel)]="editPriority" [ngModelOptions]="{standalone: true}">
+                <option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option>
+              </select>
+            </div>
+            <div class="task-controls">
+              <button class="icon-button" type="button" (click)="saveEdit(task.id)">Save</button>
+              <button class="icon-button" type="button" (click)="editingId = null">Cancel</button>
+            </div>
+          </ng-container>
+          <ng-template #taskView>
+            <span class="task-title">{{ task.title }}</span>
+            <div class="task-controls">
+              <span class="priority" [ngClass]="'priority-' + task.priority">{{ task.priority }}</span>
+              <button class="icon-button" type="button" (click)="beginEdit(task)">Edit</button>
+              <button class="icon-button danger" type="button" (click)="removeTask(task.id)">Delete</button>
+            </div>
+          </ng-template>
+        </li>
+      </ul>
+    </section>
+    <aside>
+      <section class="panel bench-panel">
+        <h2>DOM benchmark</h2>
+        <p>Three runs per operation; the median is reported. The suite creates 100, 500 and 1,000 tasks, then updates and deletes 50.</p>
+        <div class="bench-actions">
+          <button class="button button-primary" type="button" (click)="runBenchmarks()" [disabled]="running()">
+            {{ running() ? 'Benchmark running…' : 'Run full benchmark' }}
+          </button>
+          <span class="progress-label" role="status" aria-live="polite">{{ progress() }}</span>
+        </div>
+        <ul *ngIf="results().length > 0" class="results-list">
+          <li *ngFor="let result of results()">
+            <span>{{ result.operation.replaceAll('-', ' ') }}</span>
+            <strong>{{ result.medianMs.toFixed(2) }} ms</strong>
+          </li>
+        </ul>
+        <p *ngIf="results().length > 0" class="memory-note">
+          Heap after run (Chrome only): {{ heapMB() === null ? 'not exposed by this browser' : (heapMB()!.toFixed(1) + ' MB') }}
+        </p>
+      </section>
+    </aside>
+  </div>
+</main>

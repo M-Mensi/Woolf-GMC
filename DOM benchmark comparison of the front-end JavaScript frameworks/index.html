@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A reproducible DOM-operation benchmark for React, Angular, Vue, and Svelte.">
+    <title>DOM Bench — Framework comparison</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="home-shell">
+      <header class="home-hero">
+        <p class="eyebrow">FRONT-END PERFORMANCE STUDY · 01</p>
+        <h1>Same tasks.<br><span>Four ways</span> to render.</h1>
+        <p class="home-lede">A small, repeatable comparison of list creation, updates and removal across React, Angular, Vue and Svelte.</p>
+        <div class="home-meta"><span class="live-dot"></span> Production-mode builds · 3 samples · median timings</div>
+      </header>
+      <section class="framework-grid" aria-label="Framework demos">
+        <a class="framework-card react-card" href="./apps/react/index.html">
+          <span class="framework-index">01 / REACT</span><strong>React</strong><span>Components + state</span><b>Open benchmark ↗</b>
+        </a>
+        <a class="framework-card angular-card" href="./angular/browser/index.html">
+          <span class="framework-index">02 / ANGULAR</span><strong>Angular</strong><span>Signals + ngFor / ngIf</span><b>Open benchmark ↗</b>
+        </a>
+        <a class="framework-card vue-card" href="./apps/vue/index.html">
+          <span class="framework-index">03 / VUE</span><strong>Vue</strong><span>Reactivity + directives</span><b>Open benchmark ↗</b>
+        </a>
+        <a class="framework-card svelte-card" href="./apps/svelte/index.html">
+          <span class="framework-index">04 / SVELTE</span><strong>Svelte</strong><span>Compiler + keyed each</span><b>Open benchmark ↗</b>
+        </a>
+      </section>
+      <section class="scoreboard">
+        <div class="scoreboard-head">
+          <div><p class="eyebrow">YOUR BROWSER RUNS</p><h2>Measured results</h2></div>
+          <button id="clear-results" class="button button-outline" type="button">Clear saved runs</button>
+        </div>
+        <p class="muted">Run each app's benchmark in the same browser and production build. Results are saved locally in this browser; this page does not claim pre-recorded or universal framework timings.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Framework</th><th>100 tasks</th><th>500 tasks</th><th>1,000 tasks</th><th>Update 50</th><th>Delete 50</th><th>Heap after run</th></tr></thead>
+            <tbody id="results-body"><tr><td colspan="7" class="empty-row">No benchmark runs saved yet. Open a framework demo and run the suite.</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+      <footer class="home-footer">
+        <p>These are client-side measurements for the current browser and device—not a universal ranking.</p>
+        <a href="./README.md">Setup and benchmark method ↗</a>
+        <a href="./reflection-report.md">Reflection report ↗</a>
+      </footer>
+    </main>
+    <script type="module">
+      const STORAGE_KEY = "dom-framework-benchmark-v1";
+      const body = document.querySelector("#results-body");
+      const load = () => {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        const parsed = JSON.parse(raw || "[]");
+        if (!Array.isArray(parsed)) {
+          throw new TypeError("Saved benchmark data has an invalid format.");
+        }
+        return parsed;
+      };
+      const render = () => {
+        let runs;
+        try {
+          runs = load();
+        } catch (error) {
+          body.replaceChildren();
+          const cell = body.insertRow().insertCell();
+          cell.colSpan = 7;
+          cell.className = "empty-row";
+          cell.textContent = `Unable to read saved benchmark runs: ${error.message}`;
+          return;
+        }
+        const latest = new Map();
+        for (const result of runs) latest.set(result.framework, result);
+        const rows = [...latest.values()].sort((a, b) => a.framework.localeCompare(b.framework));
+        body.replaceChildren();
+        if (!rows.length) {
+          const cell = body.insertRow().insertCell();
+          cell.colSpan = 7;
+          cell.className = "empty-row";
+          cell.textContent = "No benchmark runs saved yet. Open a framework demo and run the suite.";
+          return;
+        }
+        for (const run of rows) {
+          const values = new Map(run.measurements.map((item) => [item.operation, item.medianMs]));
+          const ms = (value) => Number.isFinite(value) ? `${value.toFixed(2)} ms` : "—";
+          const row = body.insertRow();
+          const framework = document.createElement("th");
+          framework.scope = "row";
+          framework.textContent = run.framework;
+          row.append(framework);
+          for (const operation of ["render-100", "render-500", "render-1000", "update-50", "delete-50"]) {
+            row.insertCell().textContent = ms(values.get(operation));
+          }
+          row.insertCell().textContent = run.heapMB == null ? "N/A" : `${run.heapMB.toFixed(1)} MB`;
+        }
+      };
+      document.querySelector("#clear-results").addEventListener("click", () => {
+        localStorage.removeItem(STORAGE_KEY);
+        render();
+      });
+      window.addEventListener("storage", render);
+      render();
+    </script>
+  </body>
+</html>
